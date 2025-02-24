@@ -1,0 +1,59 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.9, pytest-8.3.4, pluggy-1.5.0
+rootdir: C:\Users\edgar.b.sanchez\Desktop\Programas\Behavior_driven_development
+configfile: pytest.ini
+plugins: bdd-8.1.0
+collected 9 items
+
+tests\test_robot_slow_down_1.py .....F                                   [ 66%]
+tests\test_velocity.py ...                                               [100%]
+
+================================== FAILURES ===================================
+_____________________________ test_slow_down[2-2] _____________________________
+
+fixturefunc = <function robot_speed_slower at 0x0000019D2DE3F7E0>
+request = <FixtureRequest for <Function test_slow_down[2-2]>>
+kwargs = {'final_speed': 2, 'the_robot': <robot.robot object at 0x0000019D2DE70CB0>}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if is_generator(fixturefunc):
+            fixturefunc = cast(
+                Callable[..., Generator[FixtureValue, None, None]], fixturefunc
+            )
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+
+..\..\..\.virtualenvs\CaptureImages-utRUStga\Lib\site-packages\_pytest\fixtures.py:898: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+the_robot = <robot.robot object at 0x0000019D2DE70CB0>, final_speed = 2
+
+    @then(parsers.cfparse("speed should be {final_speed: d}m/s"))
+    def robot_speed_slower(the_robot, final_speed):
+>       assert(the_robot.velocity.speed == final_speed)
+E       assert 1 == 2
+E        +  where 1 = <velocity.velocity object at 0x0000019D2DE70C80>.speed
+E        +    where <velocity.velocity object at 0x0000019D2DE70C80> = <robot.robot object at 0x0000019D2DE70CB0>.velocity
+
+tests\test_robot_slow_down_1.py:38: AssertionError
+---------------------------- Captured stdout call -----------------------------
+Before scenario
+Feature: Slow down whe object nervy
+Scenario: Robot detects object while in motion
+---------
+whatever is going on
+whatever is going on
+whatever is going on
+=========================== short test summary info ===========================
+FAILED tests/test_robot_slow_down_1.py::test_slow_down[2-2] - assert 1 == 2
+========================= 1 failed, 8 passed in 0.18s =========================
